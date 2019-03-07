@@ -292,7 +292,7 @@ defmodule Coherence.Schema do
            Keyword.get(unquote(opts), :authenticatable, true) do
         def checkpw(password, encrypted) do
           try do
-            apply(Config.password_hashing_alg(), :checkpw, [password, encrypted])
+            apply(Config.password_hashing_alg(), :verify_pass, [password, encrypted])
           rescue
             _ -> false
           end
@@ -301,10 +301,8 @@ defmodule Coherence.Schema do
         defoverridable checkpw: 2
 
         def encrypt_password(password) do
-          apply(Config.password_hashing_alg(), :hashpwsalt, [password])
+          apply(Config.password_hashing_alg(), :hash_pwd_salt, [password])
         end
-
-        defoverridable encrypt_password: 1
 
         def validate_coherence(changeset, params) do
           changeset
