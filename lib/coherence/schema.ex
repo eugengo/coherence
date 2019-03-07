@@ -304,6 +304,8 @@ defmodule Coherence.Schema do
           apply(Config.password_hashing_alg(), :hashpwsalt, [password])
         end
 
+        defoverridable encrypt_password: 1
+
         def validate_coherence(changeset, params) do
           changeset
           |> validate_length(:password, min: Config.minimum_password_length())
